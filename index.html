@@ -20,9 +20,14 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 {
+        .header-logo {
             text-align: center;
-            color: #333;
+            margin: 20px 0;
+        }
+        .header-logo img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 15px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -57,6 +62,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            width: 100%;
         }
         .btn-submit:hover {
             background-color: #45a049;
@@ -64,12 +70,28 @@
         .priority-low { color: green; }
         .priority-medium { color: orange; }
         .priority-high { color: red; }
+        .success-message {
+            display: none;
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header-logo">
+        <img src="logo-empresa.png" alt="Logo de la empresa">
         <h1>Formulario de Tickets TIC</h1>
-        <form id="ticketForm" action="procesar_ticket.php" method="post" enctype="multipart/form-data">
+    </div>
+    
+    <div class="container">
+        <div id="successMessage" class="success-message">
+            ¡Ticket enviado con éxito! Nos pondremos en contacto contigo pronto.
+        </div>
+        
+        <form id="ticketForm">
             <!-- Información del solicitante -->
             <fieldset>
                 <legend>Información del Solicitante <span class="required">*</span></legend>
@@ -162,10 +184,70 @@
                 </div>
             </fieldset>
             
-            <div class="form-group" style="text-align: center;">
+            <div class="form-group">
                 <button type="submit" class="btn-submit">Enviar Ticket</button>
             </div>
         </form>
     </div>
+
+    <script>
+        document.getElementById('ticketForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Mostrar mensaje de "Enviando..."
+            const submitBtn = document.querySelector('.btn-submit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                departamento: document.getElementById('departamento').value,
+                email: document.getElementById('email').value,
+                telefono: document.getElementById('telefono').value,
+                asunto: document.getElementById('asunto').value,
+                categoria: document.getElementById('categoria').value,
+                prioridad: document.getElementById('prioridad').value,
+                descripcion: document.getElementById('descripcion').value,
+                equipo: document.getElementById('equipo').value,
+                ubicacion: document.getElementById('ubicacion').value,
+                fecha: document.getElementById('fecha').value
+            };
+
+            // Reemplaza esta URL con la de tu Google Apps Script
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwYOURSCRIPTID/exec';
+            
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Mostrar mensaje de éxito
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('ticketForm').reset();
+                
+                // Desplazarse al mensaje de éxito
+                document.getElementById('successMessage').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al enviar el ticket: ' + error.message);
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Ticket';
+            });
+        });
+    </script>
 </body>
 </html>
