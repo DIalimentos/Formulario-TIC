@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Tickets TIC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 120px;
+        }
+        .required {
+            color: red;
+        }
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+        .priority-low { color: green; }
+        .priority-medium { color: orange; }
+        .priority-high { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulario de Tickets TIC</h1>
+        <form id="ticketForm" action="procesar_ticket.php" method="post" enctype="multipart/form-data">
+            <!-- Información del solicitante -->
+            <fieldset>
+                <legend>Información del Solicitante <span class="required">*</span></legend>
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre completo:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="departamento">Departamento/Área:</label>
+                    <input type="text" id="departamento" name="departamento" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefono">Teléfono de contacto:</label>
+                    <input type="tel" id="telefono" name="telefono">
+                </div>
+            </fieldset>
+            
+            <!-- Detalles del problema -->
+            <fieldset>
+                <legend>Detalles del Problema <span class="required">*</span></legend>
+                
+                <div class="form-group">
+                    <label for="asunto">Asunto:</label>
+                    <input type="text" id="asunto" name="asunto" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoria">Categoría del problema:</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Seleccione una categoría</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="software">Software</option>
+                        <option value="redes">Redes/Internet</option>
+                        <option value="correo">Correo electrónico</option>
+                        <option value="sistema">Sistema informático</option>
+                        <option value="impresora">Impresora/Escáner</option>
+                        <option value="telefonia">Telefonía</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prioridad">Prioridad:</label>
+                    <select id="prioridad" name="prioridad" required>
+                        <option value="">Seleccione una prioridad</option>
+                        <option value="baja" class="priority-low">Baja</option>
+                        <option value="media" class="priority-medium">Media</option>
+                        <option value="alta" class="priority-high">Alta</option>
+                        <option value="critica" class="priority-high">Crítica (Sistema caído)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción detallada del problema: <span class="required">*</span></label>
+                    <textarea id="descripcion" name="descripcion" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="archivo">Adjuntar archivo (opcional):</label>
+                    <input type="file" id="archivo" name="archivo">
+                    <small>Puede adjuntar capturas de pantalla o documentos relacionados (max. 5MB)</small>
+                </div>
+            </fieldset>
+            
+            <!-- Información adicional -->
+            <fieldset>
+                <legend>Información Adicional</legend>
+                
+                <div class="form-group">
+                    <label for="equipo">Número de equipo/activo (si aplica):</label>
+                    <input type="text" id="equipo" name="equipo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="ubicacion">Ubicación física (si aplica):</label>
+                    <input type="text" id="ubicacion" name="ubicacion">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fecha">Fecha y hora del problema:</label>
+                    <input type="datetime-local" id="fecha" name="fecha">
+                </div>
+            </fieldset>
+            
+            <div class="form-group" style="text-align: center;">
+                <button type="submit" class="btn-submit">Enviar Ticket</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
